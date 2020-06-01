@@ -1,4 +1,4 @@
-﻿using BatteryStatus.WPF.Interfaces;
+﻿using LaptopBatteryGraph.Interfaces;
 
 namespace LaptopBatteryGraph.Providers
 {

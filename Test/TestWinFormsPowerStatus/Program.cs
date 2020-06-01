@@ -8,35 +8,82 @@ namespace TestWinFormsPowerStatus
     {
         static void Main(string[] args)
         {
-            //Type t = typeof(System.Windows.Forms.PowerStatus);
-            //PropertyInfo[] pi = t.GetProperties();
-            //for (int i = 0; i < pi.Length; i++)
-            //{
-            //    var prop = pi[i].GetValue(System.Windows.Forms.SystemInformation.PowerStatus, null);
-            //    Console.WriteLine(pi[i].Name);
-            //    Console.WriteLine("\t" + prop);
-            //}
+            BatteryStatus bs = new BatteryStatus();
+            bs.BatteryStatusUpdate += (s, bi) =>
+            {
+                Console.Clear();
+                Console.WriteLine(nameof(bi.CurrentCapacity) + ", " + bi.CurrentCapacity);
+                Console.WriteLine(nameof(bi.DesignedMaxCapacity) + ", " + bi.DesignedMaxCapacity);
+                Console.WriteLine(nameof(bi.FullChargeCapacity) + ", " + bi.FullChargeCapacity);
+                Console.WriteLine(nameof(bi.Voltage) + ", " + bi.Voltage);
+                Console.WriteLine(nameof(bi.DischargeRate) + ", " + bi.DischargeRate);
+                Console.WriteLine(nameof(bi.CurrentCapacityPercent) + ", " + bi.CurrentCapacityPercent);
+                Console.WriteLine(nameof(bi.BatteryHealthPercent) + ", " + bi.BatteryHealthPercent);
+                Console.WriteLine(nameof(bi.ChargeStatus) + ", " + bi.ChargeStatus);
+            };
 
-            BatteryInformation cap = BatteryInfo.GetBatteryInformation();
-            Console.WriteLine(cap.FullChargeCapacity);
-
+            bs.Start();
 
             Console.ReadLine();
+        }
+
+        public class BatteryStatus
+        {
+            bool _check = false;
+
+            System.Threading.Timer _timer;
+            BatteryInformation _last_batteryInfo;
+            BatteryInformation _batteryInfo;
+            public EventHandler<BatteryInformation> BatteryStatusUpdate;
+
+            public BatteryStatus()
+            {
+                this._last_batteryInfo = new BatteryInformation();
+            }
+
+            public void Start()
+            {
+                _timer = new System.Threading.Timer(Update, null, TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(1000));
+
+            }
+
+            public void Stop()
+            {
+                _timer.Dispose();
+                _timer = null;
+            }
+
+            void Update(object state)
+            {
+                while (_check == false)
+                {
+                    this._batteryInfo = BatteryInfo.GetBatteryInformation();
+                    if (this._last_batteryInfo.CurrentCapacity != this._batteryInfo.CurrentCapacity)
+                    {
+                        this._last_batteryInfo = this._batteryInfo;
+
+                        this.BatteryStatusUpdate?.Invoke(this, this._batteryInfo);
+                    }
+                }
+            }
         }
 
         // https://gist.github.com/ahawker/9715872
         public class BatteryInformation
         {
-            public uint CurrentCapacity { get; set; }
-            public int DesignedMaxCapacity { get; set; }
-            public int FullChargeCapacity { get; set; }
-            public uint Voltage { get; set; }
-            public int DischargeRate { get; set; }
+            public uint CurrentCapacity { get; set; } = 0;
+            public int DesignedMaxCapacity { get; set; } = 0;
+            public int FullChargeCapacity { get; set; } = 0;
+            public uint Voltage { get; set; } = 0;
+            public int DischargeRate { get; set; } = 0;
+
+            public double CurrentCapacityPercent => Math.Round(((double)this.CurrentCapacity / (double)this.FullChargeCapacity) * 100, 2);
+            public double BatteryHealthPercent => Math.Round(((double)this.FullChargeCapacity / (double)this.DesignedMaxCapacity * 100), 2);
+            public string ChargeStatus => this.DischargeRate < 0 ? "Discharging" : "Charging";
         }
 
         public static class BatteryInfo
         {
-
             public static BatteryInformation GetBatteryInformation()
             {
                 IntPtr deviceDataPointer = IntPtr.Zero;
@@ -127,8 +174,6 @@ namespace TestWinFormsPowerStatus
                     Marshal.FreeHGlobal(batteryWaitStatusPointer);
                 }
             }
-
-
 
             private static bool DeviceIoControl(IntPtr deviceHandle, uint controlCode, ref uint output)
             {
