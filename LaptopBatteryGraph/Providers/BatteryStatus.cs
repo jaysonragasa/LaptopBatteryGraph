@@ -57,6 +57,7 @@ namespace LaptopBatteryGraph.Providers
 
         public double CurrentCapacityPercent => Math.Round(((double)this.CurrentCapacity / (double)this.FullChargeCapacity) * 100, 2);
         public double BatteryHealthPercent => Math.Round(((double)this.FullChargeCapacity / (double)this.DesignedMaxCapacity * 100), 2);
+        public string ChargeStatus => this.DischargeRate < 0 ? "Discharging" : "Charging";
     }
 
     public static class BatteryInfo

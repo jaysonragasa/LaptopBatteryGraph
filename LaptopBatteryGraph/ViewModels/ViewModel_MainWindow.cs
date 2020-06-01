@@ -104,10 +104,23 @@ namespace LaptopBatteryGraph.ViewModels
             this.BatteryDetails.BatteryHealthInPercent = 93.5;
         }
 
-        void Initialize()
+        public void Initialize()
         {
             _batteryStatus = new BatteryStatus();
             _batteryStatus.Start();
+            _batteryStatus.BatteryStatusUpdate += (s, bi) =>
+            {
+                this.BatteryDetails.BatteryStatus = bi.ChargeStatus;
+                this.BatteryDetails.ChargeDischargeRate = bi.DischargeRate;
+                this.BatteryDetails.DesignCapacity = bi.DesignedMaxCapacity;
+                this.BatteryDetails.FullCharge = bi.FullChargeCapacity;
+                this.BatteryDetails.RemainingCapacity = (int)bi.CurrentCapacity;
+                this.BatteryDetails.RemainingCapacityInPercent = bi.CurrentCapacityPercent;
+                this.BatteryDetails.BatteryHealthInPercent = bi.BatteryHealthPercent;
+
+                Chart.DischargeRateSeries.Values.Add(this.BatteryDetails.ChargeDischargeRate);
+                Chart.RemainingCapacity.Values.Add(this.BatteryDetails.RemainingCapacity);
+            };
         }
         #endregion
 
@@ -117,5 +130,12 @@ namespace LaptopBatteryGraph.ViewModels
 
             _batteryStatus.Stop();
         }
+
+        //void UpdateRemainingDischargeTime()
+        //{
+        //    this.BatteryDetails.RemainingTime = PowerManager.RemainingDischargeTime;
+        //    TimeSpan remaining = PowerManager.RemainingDischargeTime;
+        //    this.BatteryDetails.RemainingTimeText = $"{remaining.Hours}H {remaining.Minutes}m {remaining.Seconds}s";
+        //}
     }
 }
