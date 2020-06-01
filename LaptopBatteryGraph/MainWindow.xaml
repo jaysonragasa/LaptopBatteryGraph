@@ -109,13 +109,13 @@
                     <TextBlock jio:GridEx.RowColumn="0/2" Text="{Binding Main.BatteryDetails.BatteryStatus}" />
                     <TextBlock jio:GridEx.RowColumn="0/4" Text="Old values" />
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Remaining Time" Opacity="0.5" FontWeight="Bold" />
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Main.BatteryDetails.RemainingTime, Converter={StaticResource ExpandedTimeSpan}}" />
-                    <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding Main.OldBatteryDetailValues.RemainingTime, Converter={StaticResource ExpandedTimeSpan}}" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Remaining Time" Opacity="0.5" FontWeight="Bold" Visibility="Collapsed" />
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Main.BatteryDetails.RemainingTime, Converter={StaticResource ExpandedTimeSpan}}" Visibility="Collapsed" />
+                    <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding Main.OldBatteryDetailValues.RemainingTime, Converter={StaticResource ExpandedTimeSpan}}" Visibility="Collapsed" />
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Time on Battery" Opacity="0.5" FontWeight="Bold" />
-                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Main.BatteryDetails.TimeOnBattery, Converter={StaticResource ExpandedTimeSpan}}" />
-                    <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding Main.OldBatteryDetailValues.TimeOnBattery, Converter={StaticResource ExpandedTimeSpan}}" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Time on Battery" Opacity="0.5" FontWeight="Bold" Visibility="Collapsed" />
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Main.BatteryDetails.TimeOnBattery, Converter={StaticResource ExpandedTimeSpan}}" Visibility="Collapsed" />
+                    <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding Main.OldBatteryDetailValues.TimeOnBattery, Converter={StaticResource ExpandedTimeSpan}}" Visibility="Collapsed" />
 
                     <TextBlock Grid.Row="3" Grid.Column="0" Text="Highest Dischage Rate" Opacity="0.5" FontWeight="Bold" />
                     <TextBlock Grid.Row="3" Grid.Column="2">
