@@ -7,8 +7,6 @@ namespace LaptopBatteryGraph.Providers
 {
     public class BatteryStatus
     {
-        bool _check = false;
-
         System.Threading.Timer _timer;
         BatteryInformation _last_batteryInfo;
         BatteryInformation _batteryInfo;
@@ -33,15 +31,12 @@ namespace LaptopBatteryGraph.Providers
 
         void Update(object state)
         {
-            while (_check == false)
+            this._batteryInfo = BatteryInfo.GetBatteryInformation();
+            if (this._last_batteryInfo.CurrentCapacity != this._batteryInfo.CurrentCapacity)
             {
-                this._batteryInfo = BatteryInfo.GetBatteryInformation();
-                if (this._last_batteryInfo.CurrentCapacity != this._batteryInfo.CurrentCapacity)
-                {
-                    this._last_batteryInfo = this._batteryInfo;
+                this._last_batteryInfo = this._batteryInfo;
 
-                    this.BatteryStatusUpdate?.Invoke(this, this._batteryInfo);
-                }
+                this.BatteryStatusUpdate?.Invoke(this, this._batteryInfo);
             }
         }
     }
