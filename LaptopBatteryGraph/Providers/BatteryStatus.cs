@@ -19,7 +19,7 @@ namespace LaptopBatteryGraph.Providers
 
         public void Start()
         {
-            _timer = new System.Threading.Timer(Update, null, TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(1000));
+            _timer = new System.Threading.Timer(Update, null, TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3));
 
         }
 

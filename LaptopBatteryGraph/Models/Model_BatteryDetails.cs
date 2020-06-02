@@ -18,6 +18,8 @@ namespace LaptopBatteryGraph.Models
                 if (v > this.HighestDischargeRate) this.HighestDischargeRate = v;
                 if (this.LowestDischargeRate == -1) this.LowestDischargeRate = value;
                 else if (v < this.LowestDischargeRate) this.LowestDischargeRate = v;
+
+                this.ChargeDischargeText = value < 0 ? "Discharge Rate" : "Charge Rate";
             }
         }
 

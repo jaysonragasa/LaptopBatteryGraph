@@ -58,6 +58,13 @@ namespace LaptopBatteryGraph.ViewModels
             get { return _inititalDateTime; }
             set { Set(nameof(InititalDateTime), ref _inititalDateTime, value); }
         }
+
+        private int _MaxValue = 50;
+        public int MaxValue
+        {
+            get { return _MaxValue; }
+            set { Set(nameof(MaxValue), ref _MaxValue, value); }
+        }
         #endregion
 
         #region commands

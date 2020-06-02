@@ -4,12 +4,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="Laptop Battery Graph" Height="450" Width="800"
         
         DataContext="{Binding Source={StaticResource Locator}}"
         x:Name="thisCartChart"
         xmlns:jio="clr-namespace:Jara.Xaml.Control.Extension;assembly=Jara.Xaml.ControlExtensions.NetStandard"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:geared="clr-namespace:LiveCharts.Geared;assembly=LiveCharts.Geared" Icon="appicon.png"
         >
 
     <Grid jio:GridEx.GridDefinitions="~ * ~">
@@ -33,15 +34,43 @@
             </Menu>
         </DockPanel>
 
-        <Grid Grid.Row="1" Margin="10">
-            <lvc:CartesianChart Series="{Binding Chart.Series}" LegendLocation="None" Margin="0,0,0,0" Pan="X">
+        <Grid Grid.Row="1" Margin="10" jio:GridEx.RowDefinitions="* ~">
+            <lvc:CartesianChart 
+                Series="{Binding Chart.Series}" 
+                LegendLocation="None" 
+                Margin="0,0,0,0" 
+                Zoom="X"
+                >
+
+                <!--<lvc:CartesianChart.Series>
+                    <geared:GLineSeries StrokeThickness="0" 
+                                    Values="{Binding Values}"
+                                    Fill="#2194F1"
+                                    AreaLimit="0"
+                                    PointGeometry="{x:Null}"/>
+                </lvc:CartesianChart.Series>-->
+
+                <!--<lvc:CartesianChart.Resources>
+                    <Style TargetType="lvc:Separator">
+                        <Setter Property="StrokeThickness" Value="2.5"></Setter>
+                        <Setter Property="Stroke" Value="#E7E7E7"></Setter>
+                        <Style.Triggers>
+                            <Trigger Property="AxisOrientation" Value="X">
+                                <Setter Property="IsEnabled" Value="False"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </lvc:CartesianChart.Resources>-->
+                
+
+
                 <!--<lvc:CartesianChart.AxisY>
                         <lvc:Axis Labels="{Binding DataContext.Main.YLabels, ElementName=thisCartChart}"></lvc:Axis>
                     </lvc:CartesianChart.AxisY>-->
                 <lvc:CartesianChart.AxisX>
                     <lvc:DateAxis Period="Minutes" 
                                   MinValue="0"
-                                  MaxValue="70"
+                                  MaxValue="{Binding Chart.MaxValue}"
                                   ShowLabels="True" 
                                   HeaderForeground="Black"
                                   InitialDateTime="{Binding Chart.InititalDateTime}">
@@ -51,6 +80,8 @@
                     </lvc:DateAxis>
                 </lvc:CartesianChart.AxisX>
             </lvc:CartesianChart>
+
+            
         </Grid>
 
         <Grid Grid.Row="2" Margin="10" jio:GridEx.GridDefinitions="* 20 */~ 20 ~ 20 ~ 20 ~ 20 ~">

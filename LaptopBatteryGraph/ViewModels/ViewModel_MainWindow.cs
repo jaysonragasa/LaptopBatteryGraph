@@ -6,7 +6,6 @@ using LaptopBatteryGraph.Providers;
 using System;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace LaptopBatteryGraph.ViewModels
 {
@@ -120,6 +119,15 @@ namespace LaptopBatteryGraph.ViewModels
 
                 Chart.DischargeRateSeries.Values.Add(this.BatteryDetails.ChargeDischargeRate);
                 Chart.RemainingCapacity.Values.Add(this.BatteryDetails.RemainingCapacity);
+
+                if(Chart.DischargeRateSeries.Values.Count > 50)
+                    Chart.MaxValue = Chart.DischargeRateSeries.Values.Count;
+
+                if(Chart.MaxValue > 200)
+                {
+                    Chart.DischargeRateSeries.Values.RemoveAt(0);
+                    Chart.RemainingCapacity.Values.RemoveAt(0);
+                }
             };
         }
         #endregion
